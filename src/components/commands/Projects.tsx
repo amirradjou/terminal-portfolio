@@ -16,6 +16,22 @@ import Usage from "../Usage";
 const Projects: React.FC = () => {
   const { arg, history, rerender } = useContext(termContext);
 
+  const projects = [
+    {
+      id: 1,
+      title: "CNSim - A Consensus Network Simulator",
+      desc: "An open-source simulator for in-depth analysis of consensus networks, developed by the Enterprise Systems Group of York University.",
+      url: "#", // Replace "#" with the actual URL if available
+    },
+    {
+      id: 2,
+      title: "CO2 Emissions in Bitcoin Mining",
+      desc: "Conducted comprehensive environmental impact analyses by quantifying CO2 emissions from Bitcoin mining operations, utilizing data analytics.",
+      url: "#", // Replace "#" with the actual URL if available
+    },
+    // Add more projects as needed
+  ];
+
   /* ===== get current command ===== */
   const currentCommand = getCurrentCmdArry(history);
 
@@ -40,7 +56,7 @@ const Projects: React.FC = () => {
     <div data-testid="projects">
       <ProjectsIntro>
         “Talk is cheap. Show me the code”? I got you. <br />
-        Here are some of my projects you shouldn't misss
+        Here are some of my projects you shouldn't miss
       </ProjectsIntro>
       {projects.map(({ id, title, desc }) => (
         <ProjectContainer key={id}>
@@ -48,36 +64,43 @@ const Projects: React.FC = () => {
           <ProjectDesc>{desc}</ProjectDesc>
         </ProjectContainer>
       ))}
+
+      {/* Personal Projects Section */}
+      <ProjectsIntro>Here are some of my personal projects:</ProjectsIntro>
+      {personalProjects.map(({ id, title, desc }) => (
+        <ProjectContainer key={id}>
+          <ProjectTitle>{`${id}. ${title}`}</ProjectTitle>
+          <ProjectDesc>{desc}</ProjectDesc>
+        </ProjectContainer>
+      ))}
+
       <Usage cmd="projects" marginY />
     </div>
   );
 };
 
-const projects = [
+const personalProjects = [
   {
     id: 1,
-    title: "Sat Naing's Blog",
-    desc: "My personal blog where I can write down my thoughts and experiences.",
-    url: "https://satnaing.dev/blog/",
+    title: "HashChain",
+    desc: "Developed HashChain, an innovative blockchain network leveraging JavaScript for core functionality. Integrated Ethereum blockchain to facilitate secure, decentralized transactions.",
   },
   {
     id: 2,
-    title: "Haru Fashion",
-    desc: "An ecommerce web application where users can browse various products and make purchases.",
-    url: "https://haru-fashion.vercel.app/",
+    title: "FoF",
+    desc: "Spearheaded the development of FoF, a dynamic social media platform, using Flutter for an intuitive front-end and Django for a robust back-end.",
   },
   {
     id: 3,
-    title: "Haru API",
-    desc: "A RESTful API developed for the Haru fashion ecommerce project.",
-    url: "https://satnaing.github.io/haru-api/",
+    title: "Price Estimation for Cars",
+    desc: "Orchestrated the development of a comprehensive car price estimation tool. Utilized Python for its flexibility and efficiency. Implemented web scraping techniques using BeautifulSoup and Selenium to gather extensive data from various online sources.",
   },
   {
     id: 4,
-    title: "AstroPaper Blog Theme",
-    desc: "A minimal, accessible and SEO-friendly Astro blog theme.",
-    url: "https://astro-paper.pages.dev/",
+    title: "Spy Game",
+    desc: "Conceptualized and developed 'Spy Game', a captivating multiplayer spy-themed game for Android platforms.",
   },
+  // Add more personal projects as needed
 ];
 
 export default Projects;
