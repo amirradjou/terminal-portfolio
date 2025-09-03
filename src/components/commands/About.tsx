@@ -8,13 +8,24 @@ const About: React.FC = () => {
   return (
     <AboutWrapper data-testid="about">
       <p>
-        Hi, my name is <HighlightSpan>Amirreza Radjou</HighlightSpan>!
+        Hi, my name is <HighlightSpan>Amirreza Radjou</HighlightSpan>! Thanks
+        for visiting my terminal; I'm thrilled you're here and hope you like it.
       </p>
       <p>
-        I'm <HighlightAlt>a Software Developer</HighlightAlt> currently pursuing my Master of Computer Science at York University in Toronto, Ontario, Canada.
+        I'm a{" "}
+        <HighlightAlt>
+          Software Engineer specializing in backend and decentralized systems
+        </HighlightAlt>
+        , and a recent graduate of the Master of Computer Science program at
+        York University.
       </p>
       <p>
-        I am passionate about developing software solutions and contributing to innovative projects. With experience in various programming languages and technologies, I aim to leverage my skills to create impactful web applications that address real-life challenges.
+        I am passionate about building secure and scalable software solutions to
+        solve complex engineering challenges. My experience includes developing
+        distributed network protocols in Go and Rust, architecting robust APIs,
+        and contributing to open-source decentralized databases like Go-OrbitDB.
+        I am currently seeking new opportunities where I can apply my skills,
+        continue to learn, and contribute to innovative, high-impact projects.
       </p>
     </AboutWrapper>
   );

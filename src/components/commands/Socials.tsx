@@ -67,7 +67,12 @@ const socials = [
     url: "https://twitter.com/mooolcool",
     tab: 4,
   },
-  // Add more social links as needed
+  {
+    id: 4,
+    title: "Terminal Portfolio",
+    url: "https://amirradjou.com",
+    tab: 5,
+  },
 ];
 
 export default Socials;
