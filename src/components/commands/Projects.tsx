@@ -21,15 +21,26 @@ const Projects: React.FC = () => {
       id: 1,
       title: "CNSim - A Consensus Network Simulator",
       desc: "An open-source simulator for in-depth analysis of consensus networks, developed by the Enterprise Systems Group of York University.",
-      url: "#", // Replace "#" with the actual URL if available
+      url: "https://github.com/cmg-york/cnsim", // Replace "#" with the actual URL if available
     },
     {
       id: 2,
-      title: "CO2 Emissions in Bitcoin Mining",
-      desc: "Conducted comprehensive environmental impact analyses by quantifying CO2 emissions from Bitcoin mining operations, utilizing data analytics.",
-      url: "#", // Replace "#" with the actual URL if available
+      title: "go-orbitdb",
+      desc: "Go implementation of OrbitDB, a decentralized database for peer-to-peer applications with more than 8K stars on GitHub.",
+      url: "https://github.com/orbitdb/go-orbitdb", // Replace "#" with the actual URL if available
     },
-    // Add more projects as needed
+    {
+      id: 3,
+      title: "CO2 Emissions in Bitcoin Mining",
+      desc: "Conducted comprehensive environmental impact analyses by quantifying CO2 emissions from Bitcoin mining operations, utilizing data analytics. Demo of the website is available.",
+      url: "https://andreapodhorsky.com/btcCO2emissions", // Replace "#" with the actual URL if available
+    },
+    {
+      id: 4,
+      title: "Spy Game",
+      desc: "It is the first android game I developed and published on the cafebazaar(iranian play store) in 2019 when I was 18. It is not the best, but I love it so much and learned a lot from it.",
+      url: "https://cafebazaar.ir/app/com.example.spy?l=en", // Replace "#" with the actual URL if available
+    },
   ];
 
   /* ===== get current command ===== */
@@ -55,19 +66,10 @@ const Projects: React.FC = () => {
   ) : (
     <div data-testid="projects">
       <ProjectsIntro>
-        “Talk is cheap. Show me the code”? I got you. <br />
+        "Talk is cheap. Show me the code"? I got you. <br />
         Here are some of my projects you shouldn't miss
       </ProjectsIntro>
       {projects.map(({ id, title, desc }) => (
-        <ProjectContainer key={id}>
-          <ProjectTitle>{`${id}. ${title}`}</ProjectTitle>
-          <ProjectDesc>{desc}</ProjectDesc>
-        </ProjectContainer>
-      ))}
-
-      {/* Personal Projects Section */}
-      <ProjectsIntro>Here are some of my personal projects:</ProjectsIntro>
-      {personalProjects.map(({ id, title, desc }) => (
         <ProjectContainer key={id}>
           <ProjectTitle>{`${id}. ${title}`}</ProjectTitle>
           <ProjectDesc>{desc}</ProjectDesc>
@@ -78,29 +80,5 @@ const Projects: React.FC = () => {
     </div>
   );
 };
-
-const personalProjects = [
-  {
-    id: 1,
-    title: "HashChain",
-    desc: "Developed HashChain, an innovative blockchain network leveraging JavaScript for core functionality. Integrated Ethereum blockchain to facilitate secure, decentralized transactions.",
-  },
-  {
-    id: 2,
-    title: "FoF",
-    desc: "Spearheaded the development of FoF, a dynamic social media platform, using Flutter for an intuitive front-end and Django for a robust back-end.",
-  },
-  {
-    id: 3,
-    title: "Price Estimation for Cars",
-    desc: "Orchestrated the development of a comprehensive car price estimation tool. Utilized Python for its flexibility and efficiency. Implemented web scraping techniques using BeautifulSoup and Selenium to gather extensive data from various online sources.",
-  },
-  {
-    id: 4,
-    title: "Spy Game",
-    desc: "Conceptualized and developed 'Spy Game', a captivating multiplayer spy-themed game for Android platforms.",
-  },
-  // Add more personal projects as needed
-];
 
 export default Projects;

@@ -17,12 +17,12 @@ const Education: React.FC = () => {
 
 const eduBg = [
   {
-    title: "B.Sc in Computer Science",
-    desc: "Amirkabir University | 2018 ~ 2022",
+    title: "MSc in Computer Science",
+    desc: "York University | Sep 2022 - Jun 2025",
   },
   {
-    title: "MSc in Computer Science",
-    desc: "York University | 2022 - 2024",
+    title: "B.Sc in Computer Science",
+    desc: "Amirkabir University | Sep 2018 - Aug 2022",
   },
 ];
 
