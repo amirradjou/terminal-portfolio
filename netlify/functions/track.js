@@ -1,16 +1,15 @@
 // File: netlify/functions/track.js
 
-exports.handler = async function(event, context) {
+exports.handler = async function(event, _context) {
   // 1. Get data from the link's query parameters
   const company = event.queryStringParameters.company || 'Unknown Company';
   const role = event.queryStringParameters.role || 'Unknown Role';
   
   // 2. Get visitor info from the request headers
-  // WARNING: IP addresses are PII. Handle this data responsibly.
   const ip = event.headers['x-nf-client-connection-ip'];
   const userAgent = event.headers['user-agent'];
   
-  // 3. Log the information (you can customize this!)
+  // 3. Log the information
   const visitDetails = `
     New Portfolio Visit!
     ----------------------
@@ -21,15 +20,13 @@ exports.handler = async function(event, context) {
     💻 User Agent: ${userAgent}
   `;
 
-  // For now, we'll just log it to the Netlify Function console.
-  // See below for how to send an email or Slack message.
   console.log(visitDetails);
 
   // 4. Redirect the visitor to your actual portfolio
   return {
-    statusCode: 302, // This is a temporary redirect
+    statusCode: 302,
     headers: {
-      Location: 'https://amirradjou.com', // <-- IMPORTANT: CHANGE THIS
+      Location: 'https://amirradjou.com/',
     },
   };
 };
