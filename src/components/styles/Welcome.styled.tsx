@@ -2,6 +2,9 @@ import styled from "styled-components";
 
 export const HeroContainer = styled.div`
   display: flex;
+  /* The terminal is anchored to the bottom (column-reverse wrapper), so the
+     text block goes last: it always sits right above the prompt, and only
+     the decorative art can scroll out of view on short viewports. */
   flex-wrap: wrap-reverse;
 
   @media (max-width: 932px) {
@@ -46,6 +49,15 @@ export const HeroLinks = styled.nav`
 `;
 
 export const PreImg = styled.pre`
+  /* The art is 133 monospace columns (~0.6em each) by 32 lines. Scale it so
+     it fits the viewport width (it used to be clipped at the right edge on
+     laptops) and leaves room for the text block and prompt below it. */
+  font-size: clamp(
+    0.5rem,
+    min((100vw - 4rem) / 80, (100vh - 20rem) / 37),
+    1rem
+  );
+
   @media (max-width: 550px) {
     display: none;
   }
