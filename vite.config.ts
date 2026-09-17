@@ -18,7 +18,8 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["CV.pdf", "og.png"],
+      // CV.pdf and og.png are served straight from public/; keep them out of
+      // the service-worker precache so a first visit does not download them.
       // Web App Manifest keys are snake_case by specification.
       /* eslint-disable camelcase */
       manifest: {
