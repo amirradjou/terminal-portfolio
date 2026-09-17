@@ -1,10 +1,12 @@
 # Ignore everything
 /*
 
-# Except this folder
+# Except these
 !/src
-!README.md
 !/.github
+!README.md
+!index.html
+!vite.config.ts
 !tsconfig.json
 !tsconfig.node.json
 !package.json
