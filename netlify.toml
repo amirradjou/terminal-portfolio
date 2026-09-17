@@ -1,0 +1,10 @@
+# Netlify build configuration for amirradjou.com (site "radjou").
+# Kept in the repo so the deploy is reproducible and copyable.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  HUSKY = "0"
