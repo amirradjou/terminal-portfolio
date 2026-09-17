@@ -8,3 +8,9 @@
 [build.environment]
   NODE_VERSION = "22"
   HUSKY = "0"
+
+# Netlify's default type for .webmanifest is application/octet-stream.
+[[headers]]
+  for = "/manifest.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json"
