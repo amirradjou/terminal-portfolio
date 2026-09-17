@@ -3,6 +3,7 @@
 
 # Except this folder
 !/src
+!README.md
 !/.github
 !tsconfig.json
 !tsconfig.node.json
