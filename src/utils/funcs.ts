@@ -38,25 +38,18 @@ export const getCurrentCmdArry = (history: string[]) =>
   _.split(history[0].trim(), " ");
 
 /**
- * Check current render makes redirect
- * @param {boolean} rerender - is submitted or not
- * @param {string[]} currentCommand - current submitted command
- * @param {string} command - the command of the function
- * @param {number[]} ids - the ids that are valid targets for `go`
- * @returns {boolean} redirect - true | false
+ * Resolve the URL a `<cmd> go <id>` command should open
+ * @param {string[]} arg - The arg array of the command (e.g. ["go", "2"])
+ * @param {{ id: number; url: string }[]} items - the items that can be opened
+ * @returns {string | undefined} url - the target, or undefined when arg is not a valid `go`
  */
-export const checkRedirect = (
-  rerender: boolean,
-  currentCommand: string[],
-  command: string,
-  ids: number[]
-): boolean =>
-  rerender && // is submitted
-  currentCommand[0] === command && // current command starts with ('socials'|'projects')
-  currentCommand[1] === "go" && // first arg is 'go'
-  currentCommand.length > 1 && // current command has arg
-  currentCommand.length < 4 && // if num of arg is valid (not `projects go 1 sth`)
-  _.includes(ids, parseInt(currentCommand[2])); // arg last part is one of id
+export const redirectTarget = (
+  arg: string[],
+  items: { id: number; url: string }[]
+): string | undefined =>
+  arg[0] === "go" && arg.length === 2 // exactly `go <id>` (not `go 1 sth`)
+    ? items.find(({ id }) => String(id) === arg[1])?.url
+    : undefined;
 
 /**
  * Check current render makes redirect for theme

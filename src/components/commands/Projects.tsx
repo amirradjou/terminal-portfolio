@@ -1,10 +1,7 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { projects } from "../../data/profile";
-import {
-  checkRedirect,
-  getCurrentCmdArry,
-  isArgInvalid,
-} from "../../utils/funcs";
+import { useOpenOnSubmit } from "../../hooks/useOpenOnSubmit";
+import { isArgInvalid, redirectTarget } from "../../utils/funcs";
 import {
   ProjectContainer,
   ProjectDesc,
@@ -17,19 +14,10 @@ import Usage from "../Usage";
 const projectIds = projects.map(({ id }) => id);
 
 const Projects: React.FC = () => {
-  const { arg, history, rerender } = useContext(termContext);
+  const { arg } = useContext(termContext);
 
-  /* ===== get current command ===== */
-  const currentCommand = getCurrentCmdArry(history);
-
-  /* ===== check current command is redirect ===== */
-  useEffect(() => {
-    if (checkRedirect(rerender, currentCommand, "projects", projectIds)) {
-      projects.forEach(({ id, url }) => {
-        id === parseInt(arg[1]) && window.open(url, "_blank");
-      });
-    }
-  }, [arg, rerender, currentCommand]);
+  /* ===== open the project when `projects go <id>` is submitted ===== */
+  useOpenOnSubmit(redirectTarget(arg, projects));
 
   /* ===== check arg is valid ===== */
   const checkArg = () =>

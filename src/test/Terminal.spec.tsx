@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { UserEvent } from "@testing-library/user-event/dist/types/setup/setup";
 import { render, screen, userEvent } from "../utils/test-utils";
 import Terminal, { commands } from "../components/Terminal";
+import { cvCommands } from "../components/commands/Cv";
 import { profile, projects, socials } from "../data/profile";
 
 // setup function
@@ -194,7 +195,7 @@ describe("Terminal Component", () => {
       window.open = vi.fn();
     });
 
-    ["cv", "resume"].forEach(cmd => {
+    cvCommands.forEach(cmd => {
       it(`should open the CV when user type '${cmd}' cmd`, async () => {
         await user.type(terminalInput, `${cmd}{enter}`);
         expect(window.open).toHaveBeenCalledWith(profile.cvPath, "_blank");
@@ -233,6 +234,32 @@ describe("Terminal Component", () => {
       );
       await user.type(terminalInput, `socials go ${socials.length + 1}{enter}`);
       expect(window.open).not.toHaveBeenCalled();
+    });
+
+    // Every output is re-mounted on each submit; only the newest one may open.
+    [
+      "cv",
+      "resume",
+      "email",
+      `projects go ${projects[0].id}`,
+      `socials go ${socials[0].id}`,
+    ].forEach(cmd => {
+      it(`should open exactly one window per '${cmd}' cmd, however often it is repeated`, async () => {
+        await user.type(terminalInput, `${cmd}{enter}`);
+        expect(window.open).toHaveBeenCalledTimes(1);
+        await user.type(terminalInput, `${cmd}{enter}`);
+        expect(window.open).toHaveBeenCalledTimes(2);
+        await user.type(terminalInput, `${cmd}{enter}`);
+        expect(window.open).toHaveBeenCalledTimes(3);
+        expect(screen.getAllByTestId("input-command")).toHaveLength(4);
+      });
+    });
+
+    it("should not reopen the CV when a later command is submitted", async () => {
+      await user.type(terminalInput, "cv{enter}");
+      await user.type(terminalInput, "about{enter}");
+      await user.type(terminalInput, "help{enter}");
+      expect(window.open).toHaveBeenCalledTimes(1);
     });
   });
 
