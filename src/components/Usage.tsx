@@ -1,3 +1,4 @@
+import { projects, socials } from "../data/profile";
 import { UsageDiv } from "./styles/Output.styled";
 
 type Props = {
@@ -7,8 +8,8 @@ type Props = {
 
 const arg = {
   themes: { placeholder: "theme-name", example: "ubuntu" },
-  projects: { placeholder: "project-no", example: "4" },
-  socials: { placeholder: "social-no", example: "1" },
+  projects: { placeholder: "project-no", example: String(projects[0].id) },
+  socials: { placeholder: "social-no", example: String(socials[0].id) },
 };
 
 const Usage: React.FC<Props> = ({ cmd, marginY = false }) => {

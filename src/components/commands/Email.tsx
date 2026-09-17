@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import _ from "lodash";
+import { profile } from "../../data/profile";
 import { Wrapper } from "../styles/Output.styled";
 import { termContext } from "../Terminal";
 
@@ -10,12 +11,12 @@ const Email: React.FC = () => {
   const currentCommand = _.split(history[0], " ");
 
   if (rerender && currentCommand[0] === "email" && currentCommand.length <= 1) {
-    window.open("mailto:" + "amirreza.radjou@gmail.com", "_self");
+    window.open("mailto:" + profile.email, "_self");
   }
 
   return (
     <Wrapper>
-      <span>amirreza.radjou@gmail.com</span>
+      <span>{profile.email}</span>
     </Wrapper>
   );
 };
