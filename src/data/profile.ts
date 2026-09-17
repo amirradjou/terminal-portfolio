@@ -13,7 +13,8 @@ export const profile = {
   tagline:
     "4+ years building backend services and distributed systems in Go and Python.",
   email: "amirreza.radjou@gmail.com",
-  website: "https://amirradjou.com",
+  website: "https://terminal.amirradjou.com",
+  professionalSite: "https://amirradjou.com",
   linkedin: "https://www.linkedin.com/in/amirreza-radjou/",
   github: "https://github.com/amirradjou",
   twitter: "https://twitter.com/mooolcool",
@@ -31,6 +32,7 @@ export const socials: Social[] = [
   { id: 1, title: "LinkedIn", url: profile.linkedin },
   { id: 2, title: "GitHub", url: profile.github },
   { id: 3, title: "Twitter", url: profile.twitter },
+  { id: 4, title: "Professional site", url: profile.professionalSite },
 ];
 
 export type Project = {

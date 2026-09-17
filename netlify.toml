@@ -1,4 +1,4 @@
-# Netlify build configuration for amirradjou.com (site "radjou").
+# Netlify build configuration for terminal.amirradjou.com (Netlify site "amirradjou-terminal").
 # Kept in the repo so the deploy is reproducible and copyable.
 
 [build]
