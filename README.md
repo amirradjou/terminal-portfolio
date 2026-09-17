@@ -6,8 +6,9 @@ about me. Built with React, TypeScript, styled-components and Vite, and
 deployed to [amirradjou.com](https://amirradjou.com) on Netlify.
 
 The site is built on [satnaing/terminal-portfolio](https://github.com/satnaing/terminal-portfolio)
-(MIT). The terminal engine, theming and test setup come from that template;
-the content, hero, `cv`/`experience` commands, metadata and icons are my own.
+(MIT). The terminal engine, theming, hero layout (including the ASCII art)
+and test setup come from that template; the content, hero text and links,
+`cv`/`experience` commands, metadata and icons are my own.
 
 ## Commands
 
@@ -50,8 +51,11 @@ hints and the tests all read from it, so a new job or project is a one-file
 edit plus a look at the tests in `src/test/Terminal.spec.tsx`.
 
 To publish a new CV, replace `public/CV.pdf` and bump `cvUpdated` in
-`profile.ts`. The share image is `public/og.png` (1200x630) and the
-Open Graph / Twitter tags and JSON-LD snippet are in `index.html`.
+`profile.ts`. The public copy is built from the CV source with the phone
+number removed from the header line (keep it that way: the site publishes
+email only, no phone or address). The share image is `public/og.png`
+(1200x630) and the Open Graph / Twitter tags and JSON-LD snippet are in
+`index.html`.
 
 ## Deployment
 
