@@ -29,6 +29,28 @@ describe("Terminal Component", () => {
       expect(screen.getByTestId("input-command").textContent).toBe("welcome");
     });
 
+    it("should show a plain-text name, headline and recruiter links in the hero", () => {
+      const hero = screen.getByTestId("welcome");
+      expect(screen.getByTestId("hero-name").textContent).toBe(profile.name);
+      expect(hero.textContent).toContain(profile.headline);
+
+      const linkedin = screen.getByRole("link", { name: "LinkedIn" });
+      expect(linkedin).toHaveAttribute("href", profile.linkedin);
+      expect(linkedin).toHaveAttribute("target", "_blank");
+      expect(screen.getByRole("link", { name: "GitHub" })).toHaveAttribute(
+        "href",
+        profile.github
+      );
+      expect(screen.getByRole("link", { name: "CV (PDF)" })).toHaveAttribute(
+        "href",
+        profile.cvPath
+      );
+      expect(screen.getByRole("link", { name: "Email" })).toHaveAttribute(
+        "href",
+        `mailto:${profile.email}`
+      );
+    });
+
     it("should change input value", async () => {
       await user.type(terminalInput, "demo");
       expect(terminalInput.value).toBe("demo");

@@ -8,33 +8,41 @@ export const HeroContainer = styled.div`
     margin-bottom: 1.5rem;
   }
 
-  div {
+  > div {
     @media (min-width: 1024px) {
       flex-basis: 50%;
     }
   }
-`;
 
-export const PreName = styled.pre`
-  margin-top: 0.5rem;
-  margin-bottom: 1.5rem;
-
-  @media (max-width: 550px) {
-    display: none;
+  .info-section {
+    margin-top: 0.5rem;
   }
 `;
 
-export const PreWrapper = styled.div`
-  text-align: center;
+export const HeroName = styled.h2`
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 2rem;
+  margin-bottom: 0.25rem;
+  color: ${({ theme }) => theme.colors?.primary};
 `;
 
-export const PreNameMobile = styled.pre`
-  margin-top: 0.5rem;
-  margin-bottom: 1.5rem;
+export const HeroHeadline = styled.p`
+  font-weight: 700;
+  line-height: 1.5rem;
+`;
 
-  @media (min-width: 550px) {
-    display: none;
-  }
+export const HeroTagline = styled.p`
+  line-height: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: ${({ theme }) => theme.colors?.text[200]};
+`;
+
+export const HeroLinks = styled.nav`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  margin-bottom: 0.25rem;
 `;
 
 export const PreImg = styled.pre`
