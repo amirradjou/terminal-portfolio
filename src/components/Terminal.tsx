@@ -116,7 +116,7 @@ const Terminal = () => {
 
       let hintsCmds: string[] = [];
       commands.forEach(({ cmd }) => {
-        if (_.startsWith(cmd, inputVal)) {
+        if (_.startsWith(cmd, _.toLower(inputVal))) {
           hintsCmds = [...hintsCmds, cmd];
         }
       });
@@ -211,7 +211,10 @@ const Terminal = () => {
       </Form>
 
       {cmdHistory.map((cmdH, index) => {
+        // Commands are matched case-insensitively (visitors type "CV", "Help"…);
+        // the echoed input keeps what they typed.
         const commandArray = _.split(_.trim(cmdH), " ");
+        commandArray[0] = _.toLower(commandArray[0]);
         const validCommand = _.find(commands, { cmd: commandArray[0] });
         const contextValue = {
           arg: _.drop(commandArray),
