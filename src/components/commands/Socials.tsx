@@ -1,13 +1,9 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { socials } from "../../data/profile";
+import { useOpenOnSubmit } from "../../hooks/useOpenOnSubmit";
 import { ProjectsIntro } from "../styles/Projects.styled";
 import { Cmd, CmdDesc, CmdList, HelpWrapper } from "../styles/Help.styled";
-import {
-  checkRedirect,
-  generateTabs,
-  getCurrentCmdArry,
-  isArgInvalid,
-} from "../../utils/funcs";
+import { generateTabs, isArgInvalid, redirectTarget } from "../../utils/funcs";
 import { termContext } from "../Terminal";
 import Usage from "../Usage";
 
@@ -15,19 +11,10 @@ const socialIds = socials.map(({ id }) => id);
 const longestTitle = Math.max(...socials.map(({ title }) => title.length));
 
 const Socials: React.FC = () => {
-  const { arg, history, rerender } = useContext(termContext);
+  const { arg } = useContext(termContext);
 
-  /* ===== get current command ===== */
-  const currentCommand = getCurrentCmdArry(history);
-
-  /* ===== check current command makes redirect ===== */
-  useEffect(() => {
-    if (checkRedirect(rerender, currentCommand, "socials", socialIds)) {
-      socials.forEach(({ id, url }) => {
-        id === parseInt(arg[1]) && window.open(url, "_blank");
-      });
-    }
-  }, [arg, rerender, currentCommand]);
+  /* ===== open the profile when `socials go <id>` is submitted ===== */
+  useOpenOnSubmit(redirectTarget(arg, socials));
 
   /* ===== check arg is valid ===== */
   const checkArg = () =>

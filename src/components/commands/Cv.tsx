@@ -1,22 +1,13 @@
-import { useContext } from "react";
-import _ from "lodash";
 import { profile } from "../../data/profile";
+import { useOpenOnSubmit } from "../../hooks/useOpenOnSubmit";
 import { Wrapper } from "../styles/Output.styled";
 import { Link } from "../styles/Welcome.styled";
-import { termContext } from "../Terminal";
 
 export const cvCommands = ["cv", "resume"];
 
 const Cv: React.FC = () => {
-  const { history, rerender } = useContext(termContext);
-
-  /* ===== get current command ===== */
-  const currentCommand = _.split(history[0], " ");
-
   /* ===== open the CV in a new tab when the command is submitted ===== */
-  if (rerender && cvCommands.includes(currentCommand[0])) {
-    window.open(profile.cvPath, "_blank");
-  }
+  useOpenOnSubmit(profile.cvPath);
 
   return (
     <Wrapper data-testid="cv">
