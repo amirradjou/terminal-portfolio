@@ -18,6 +18,14 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
+      workbox: {
+        // The SPA fallback must never answer a navigation to a real file:
+        // window.open("/CV.pdf") was being served index.html by the service
+        // worker (CV.pdf is deliberately not precached). Anything with a file
+        // extension, or under /.netlify/, goes to the network instead.
+        navigateFallbackDenylist: [/\.[a-z0-9]+$/i, /^\/\.netlify\//],
+        cleanupOutdatedCaches: true,
+      },
       // CV.pdf and og.png are served straight from public/; keep them out of
       // the service-worker precache so a first visit does not download them.
       // Web App Manifest keys are snake_case by specification.

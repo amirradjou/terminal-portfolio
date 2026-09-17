@@ -1,9 +1,9 @@
-# amirradjou.com
+# terminal.amirradjou.com
 
 Amirreza Radjou's personal site: a terminal-style portfolio where visitors type
 commands such as `about`, `experience`, `projects`, `cv` and `socials` to read
 about me. Built with React, TypeScript, styled-components and Vite, and
-deployed to [amirradjou.com](https://amirradjou.com) on Netlify.
+deployed to [terminal.amirradjou.com](https://terminal.amirradjou.com) on Netlify. The conventional version of the site lives at [amirradjou.com](https://amirradjou.com) ([source](https://github.com/amirradjou/amirradjou-site)).
 
 The site is built on [satnaing/terminal-portfolio](https://github.com/satnaing/terminal-portfolio)
 (MIT). The terminal engine, theming, hero layout (including the ASCII art)

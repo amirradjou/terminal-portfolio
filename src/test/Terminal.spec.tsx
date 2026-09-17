@@ -78,6 +78,17 @@ describe("Terminal Component", () => {
       );
     });
 
+    it("should match commands case-insensitively and echo the input as typed", async () => {
+      await user.type(terminalInput, "WhoAmI{enter}");
+      expect(screen.getAllByTestId("input-command")[0].textContent).toBe(
+        "WhoAmI"
+      );
+      expect(screen.getByTestId("latest-output").firstChild?.textContent).toBe(
+        "visitor"
+      );
+      expect(screen.queryByTestId("not-found-0")).toBeNull();
+    });
+
     it("should return '/home/amirreza' when user type 'pwd' cmd", async () => {
       await user.type(terminalInput, "pwd{enter}");
       expect(screen.getByTestId("latest-output").firstChild?.textContent).toBe(

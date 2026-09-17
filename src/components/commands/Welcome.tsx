@@ -15,6 +15,11 @@ export const heroLinks = [
   { label: "LinkedIn", href: profile.linkedin, external: true },
   { label: "GitHub", href: profile.github, external: true },
   { label: "CV (PDF)", href: profile.cvPath, external: true },
+  {
+    label: "Professional site",
+    href: profile.professionalSite,
+    external: true,
+  },
   { label: "Email", href: `mailto:${profile.email}`, external: false },
 ];
 
