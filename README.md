@@ -1,84 +1,64 @@
-# Terminal Portfolio Website by Sat Naing
+# amirradjou.com
 
-![Terminal Portfolio Website by Sat Naing](https://user-images.githubusercontent.com/53733092/194220661-e2ff8b4c-f64a-4b64-a836-c52fae6bbcda.png)
+Amirreza Radjou's personal site: a terminal-style portfolio where visitors type
+commands such as `about`, `experience`, `projects`, `cv` and `socials` to read
+about me. Built with React, TypeScript, styled-components and Vite, and
+deployed to [amirradjou.com](https://amirradjou.com) on Netlify.
 
-![ts](https://badgen.net/badge/Built%20With/TypeScript/blue?style=flat-square)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/81fdb91d-c06f-46c2-b18d-dfc6f090f281/deploy-status)](https://app.netlify.com/sites/terminal-sn/deploys)
-![Gitmoji](https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg?style=flat-square)
+The site is built on [satnaing/terminal-portfolio](https://github.com/satnaing/terminal-portfolio)
+(MIT). The terminal engine, theming and test setup come from that template;
+the content, hero, `cv`/`experience` commands, metadata and icons are my own.
 
-My perfolio website in terminal version developed with React, TypeScript and Styled-Components. Multiple themes supported and keyboard shortcuts can be used for some functionalities.
+## Commands
 
-Blog Post: https://satnaing.dev/blog/posts/how-do-i-develop-my-terminal-portfolio-website-with-react
+| Command      | What it does                                    |
+| ------------ | ----------------------------------------------- |
+| `about`      | short professional summary                      |
+| `experience` | work history from the CV                        |
+| `education`  | degrees and dates                               |
+| `projects`   | selected projects (`projects go <n>` opens one) |
+| `cv`         | opens the CV PDF (`resume` is an alias)         |
+| `socials`    | LinkedIn, GitHub, ... (`socials go <n>`)        |
+| `email`      | opens a mail draft                              |
+| `themes`     | switch colour theme (`themes set <name>`)       |
+| `help`       | list everything, including keyboard shortcuts   |
 
-## Features
+Tab / Ctrl+i autocompletes, Up/Down walk the history, Ctrl+l clears.
 
-- Responsive Design 📱💻
-- Multiple themes 🎨
-- Autocomplete feature ✨ (TAB | Ctrl + i)
-- Go previous and next command ⬆️⬇️
-- View command history 📖
-- PWA and Offline Support 🔥
-- Well-tested ✅
-
-## Tech Stack
-
-**Frontend** - [React](https://reactjs.org/), [TypeScript](https://www.typescriptlang.org/)  
-**Styling** - [Styled-Components](https://styled-components.com/)  
-**UI/UX** - [Figma](https://figma.com/)  
-**State Management** - [ContextAPI](https://reactjs.org/docs/context.html)  
-**Testing** - [Vitest](https://vitest.dev/), [React Testing Library](https://testing-library.com/)  
-**Deployment** - [Netlify](https://app.netlify.com/)
-
-## Multiple Themes
-
-Currently, this website supports 6 themes. Type `themes` in the terminal for more info.
-![terminal-portfolio-themes](https://user-images.githubusercontent.com/53733092/194221801-94f1c28b-4865-4b7f-a73e-d41132519bea.png)
-
-## Lighthouse Score
-
-<p align="center">
-<img width="710" alt="Sat Naing Terminal Lighthouse Score" src="public/lighthouse-result.svg">
-</p>
-
-## Running Locally
-
-Clone the project
-
-```bash
-git clone https://github.com/satnaing/terminal-portfolio.git
-```
-
-Go to the project directory
-
-```bash
-cd terminal-portfolio
-```
-
-Remove remote origin
-
-```bash
-git remote remove origin
-```
-
-Install dependencies
+## Running locally
 
 ```bash
 npm install
+npm run dev          # http://localhost:5173
 ```
 
-Start the server
+Quality gates (all must pass before a push; CI runs the same set):
 
 ```bash
-npm run dev
+npm run lint         # eslint
+npm run format:check # prettier
+npm run test:once    # vitest + testing-library
+npm run build        # tsc + vite build -> dist/
 ```
 
-## Inspiration and Credits
+## Updating content
 
-Here are some inspiration for this kind of terminal website. Only some features and functionalities are inspired by these following websites. All codes are written on my own.
+Everything the site says about me lives in one place:
+[`src/data/profile.ts`](src/data/profile.ts) (name, headline, links, socials,
+projects, education, experience). The commands, the hero, the tab-completion
+hints and the tests all read from it, so a new job or project is a one-file
+edit plus a look at the tests in `src/test/Terminal.spec.tsx`.
 
-- [term m4tt72](https://term.m4tt72.com/)
-- [Forrest](https://fkcodes.com/)
+To publish a new CV, replace `public/CV.pdf` and bump `cvUpdated` in
+`profile.ts`. The share image is `public/og.png` (1200x630) and the
+Open Graph / Twitter tags and JSON-LD snippet are in `index.html`.
 
-## Author
+## Deployment
 
-- [@satnaing](https://satnaing.dev)
+Netlify builds `main` with `npm run build` and publishes `dist/`
+(see `netlify.toml`). Every push to `main` goes live, so changes land through
+pull requests once the CI workflow is green.
+
+## License
+
+MIT. See [LICENSE](LICENSE) for the template author's copyright notice and mine.
