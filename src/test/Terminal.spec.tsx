@@ -2,6 +2,8 @@ import { describe, it, expect, vi } from "vitest";
 import { UserEvent } from "@testing-library/user-event/dist/types/setup/setup";
 import { render, screen, userEvent } from "../utils/test-utils";
 import Terminal, { commands } from "../components/Terminal";
+import { cvCommands } from "../components/commands/Cv";
+import { profile, projects, socials } from "../data/profile";
 
 // setup function
 function setup(jsx: JSX.Element) {
@@ -26,6 +28,28 @@ describe("Terminal Component", () => {
   describe("Input Features & Initial State", () => {
     it("should display welcome cmd by default", () => {
       expect(screen.getByTestId("input-command").textContent).toBe("welcome");
+    });
+
+    it("should show a plain-text name, headline and recruiter links in the hero", () => {
+      const hero = screen.getByTestId("welcome");
+      expect(screen.getByTestId("hero-name").textContent).toBe(profile.name);
+      expect(hero.textContent).toContain(profile.headline);
+
+      const linkedin = screen.getByRole("link", { name: "LinkedIn" });
+      expect(linkedin).toHaveAttribute("href", profile.linkedin);
+      expect(linkedin).toHaveAttribute("target", "_blank");
+      expect(screen.getByRole("link", { name: "GitHub" })).toHaveAttribute(
+        "href",
+        profile.github
+      );
+      expect(screen.getByRole("link", { name: "CV (PDF)" })).toHaveAttribute(
+        "href",
+        profile.cvPath
+      );
+      expect(screen.getByRole("link", { name: "Email" })).toHaveAttribute(
+        "href",
+        `mailto:${profile.email}`
+      );
     });
 
     it("should change input value", async () => {
@@ -119,6 +143,7 @@ describe("Terminal Component", () => {
     const otherCmds = [
       "about",
       "education",
+      "experience",
       "help",
       "history",
       "projects",
@@ -133,17 +158,51 @@ describe("Terminal Component", () => {
     });
   });
 
+  describe("Content matches the CV", () => {
+    it("should describe the current role in 'about' and not the old job search", async () => {
+      await user.type(terminalInput, "about{enter}");
+      const about = screen.getByTestId("about").textContent ?? "";
+      expect(about).toContain(profile.company);
+      expect(about).toContain(profile.role);
+      expect(about).not.toMatch(/seeking|recent graduate/i);
+    });
+
+    it("should list every employer from the CV in 'experience'", async () => {
+      await user.type(terminalInput, "experience{enter}");
+      const experience = screen.getByTestId("experience").textContent ?? "";
+      ["CIBC", "Dandelion Network", "York University"].forEach(employer =>
+        expect(experience).toContain(employer)
+      );
+    });
+
+    it("should show the CV education dates", async () => {
+      await user.type(terminalInput, "education{enter}");
+      const education = screen.getByTestId("education").textContent ?? "";
+      expect(education).toContain("Sep 2022 - Oct 2025");
+      expect(education).toContain("Oct 2018 - Aug 2022");
+    });
+
+    it("should only link to https URLs in socials and projects", () => {
+      [...socials, ...projects].forEach(({ url }) => {
+        expect(url).toMatch(/^https:\/\//);
+        expect(url).not.toMatch(/netlify\.app/);
+      });
+    });
+  });
+
   describe("Redirect commands", () => {
     beforeEach(() => {
       window.open = vi.fn();
     });
 
-    it("should redirect to portfolio website when user type 'gui' cmd", async () => {
-      await user.type(terminalInput, "gui{enter}");
-      expect(window.open).toHaveBeenCalled();
-      expect(screen.getByTestId("latest-output").firstChild?.textContent).toBe(
-        ""
-      );
+    cvCommands.forEach(cmd => {
+      it(`should open the CV when user type '${cmd}' cmd`, async () => {
+        await user.type(terminalInput, `${cmd}{enter}`);
+        expect(window.open).toHaveBeenCalledWith(profile.cvPath, "_blank");
+        expect(screen.getByTestId("cv").textContent).toContain(
+          `${profile.website}${profile.cvPath}`
+        );
+      });
     });
 
     it("should open mail app when user type 'email' cmd", async () => {
@@ -154,19 +213,53 @@ describe("Terminal Component", () => {
       );
     });
 
-    const nums = [1, 2, 3, 4];
-    nums.forEach(num => {
-      it(`should redirect to project URL when user type 'projects go ${num}' cmd`, async () => {
-        await user.type(terminalInput, `projects go ${num}{enter}`);
-        expect(window.open).toHaveBeenCalled();
+    projects.forEach(({ id, url }) => {
+      it(`should redirect to project URL when user type 'projects go ${id}' cmd`, async () => {
+        await user.type(terminalInput, `projects go ${id}{enter}`);
+        expect(window.open).toHaveBeenCalledWith(url, "_blank");
       });
     });
 
-    nums.forEach(num => {
-      it(`should redirect to social media when user type 'socials go ${num}' cmd`, async () => {
-        await user.type(terminalInput, `socials go ${num}{enter}`);
-        expect(window.open).toHaveBeenCalled();
+    socials.forEach(({ id, url }) => {
+      it(`should redirect to social media when user type 'socials go ${id}' cmd`, async () => {
+        await user.type(terminalInput, `socials go ${id}{enter}`);
+        expect(window.open).toHaveBeenCalledWith(url, "_blank");
       });
+    });
+
+    it("should not redirect for a project/social number that does not exist", async () => {
+      await user.type(
+        terminalInput,
+        `projects go ${projects.length + 1}{enter}`
+      );
+      await user.type(terminalInput, `socials go ${socials.length + 1}{enter}`);
+      expect(window.open).not.toHaveBeenCalled();
+    });
+
+    // Every output is re-mounted on each submit; only the newest one may open.
+    [
+      "cv",
+      "resume",
+      "email",
+      `projects go ${projects[0].id}`,
+      `socials go ${socials[0].id}`,
+    ].forEach(cmd => {
+      it(`should open exactly one window per '${cmd}' cmd, however often it is repeated`, async () => {
+        await user.type(terminalInput, `${cmd}{enter}`);
+        expect(window.open).toHaveBeenCalledTimes(1);
+        await user.type(terminalInput, `${cmd}{enter}`);
+        expect(window.open).toHaveBeenCalledTimes(2);
+        await user.type(terminalInput, `${cmd}{enter}`);
+        expect(window.open).toHaveBeenCalledTimes(3);
+        expect(screen.getAllByTestId("input-command")).toHaveLength(4);
+      });
+    });
+
+    it("should not reopen the CV when a later command is submitted", async () => {
+      await user.type(terminalInput, "cv{enter}");
+      await user.type(terminalInput, "about{enter}");
+      await user.type(terminalInput, "help{enter}");
+      expect(window.open).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -202,8 +295,8 @@ describe("Terminal Component", () => {
         window.open = vi.fn();
 
         // firstly run commands correct options
-        await user.type(terminalInput, `projects go 4{enter}`);
-        await user.type(terminalInput, `socials go 4{enter}`);
+        await user.type(terminalInput, `projects go ${projects.length}{enter}`);
+        await user.type(terminalInput, `socials go ${socials.length}{enter}`);
         await user.type(terminalInput, `themes set espresso{enter}`);
 
         // then run cmd with incorrect options
@@ -230,6 +323,21 @@ describe("Terminal Component", () => {
         await user.keyboard("{Control>}i{/Control}");
         expect(terminalInput.value).toBe(cmd);
       });
+    });
+
+    it("should hint the real social/project names after 'socials go ' and 'projects go '", async () => {
+      await user.type(terminalInput, "socials go ");
+      await user.tab();
+      socials.forEach(({ id, title }) =>
+        expect(screen.getByText(`${id}.${title}`)).toBeInTheDocument()
+      );
+
+      await user.clear(terminalInput);
+      await user.type(terminalInput, "projects go ");
+      await user.tab();
+      projects.forEach(({ id, title }) =>
+        expect(screen.getByText(`${id}.${title}`)).toBeInTheDocument()
+      );
     });
 
     it("should clear when 'Ctrl + l' is pressed", async () => {

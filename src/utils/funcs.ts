@@ -1,5 +1,6 @@
 import _ from "lodash";
 import theme from "../components/styles/themes";
+import { projects, socials } from "../data/profile";
 
 /**
  * Generates html tabs
@@ -37,23 +38,18 @@ export const getCurrentCmdArry = (history: string[]) =>
   _.split(history[0].trim(), " ");
 
 /**
- * Check current render makes redirect
- * @param {boolean} rerender - is submitted or not
- * @param {string[]} currentCommand - current submitted command
- * @param {string} command - the command of the function
- * @returns {boolean} redirect - true | false
+ * Resolve the URL a `<cmd> go <id>` command should open
+ * @param {string[]} arg - The arg array of the command (e.g. ["go", "2"])
+ * @param {{ id: number; url: string }[]} items - the items that can be opened
+ * @returns {string | undefined} url - the target, or undefined when arg is not a valid `go`
  */
-export const checkRedirect = (
-  rerender: boolean,
-  currentCommand: string[],
-  command: string
-): boolean =>
-  rerender && // is submitted
-  currentCommand[0] === command && // current command starts with ('socials'|'projects')
-  currentCommand[1] === "go" && // first arg is 'go'
-  currentCommand.length > 1 && // current command has arg
-  currentCommand.length < 4 && // if num of arg is valid (not `projects go 1 sth`)
-  _.includes([1, 2, 3, 4], parseInt(currentCommand[2])); // arg last part is one of id
+export const redirectTarget = (
+  arg: string[],
+  items: { id: number; url: string }[]
+): string | undefined =>
+  arg[0] === "go" && arg.length === 2 // exactly `go <id>` (not `go 1 sth`)
+    ? items.find(({ id }) => String(id) === arg[1])?.url
+    : undefined;
 
 /**
  * Check current render makes redirect for theme
@@ -134,21 +130,16 @@ export const argTab = (
 
   // 7) if input is 'socials go '
   else if (_.startsWith(inputVal, "socials go ")) {
-    ["1.Github", "2.Dev.to", "3.Facebook", "4.Instagram"].forEach(t => {
-      hintsCmds = [...hintsCmds, t];
+    socials.forEach(({ id, title }) => {
+      hintsCmds = [...hintsCmds, `${id}.${title}`];
     });
     return hintsCmds;
   }
 
   // 8) if input is 'projects go '
   else if (_.startsWith(inputVal, "projects go ")) {
-    [
-      "1.Sat Naing's Blog",
-      "2.Haru Fashion",
-      "3.Haru API",
-      "4.AstroPaper Blog Theme",
-    ].forEach(t => {
-      hintsCmds = [...hintsCmds, t];
+    projects.forEach(({ id, title }) => {
+      hintsCmds = [...hintsCmds, `${id}.${title}`];
     });
     return hintsCmds;
   }

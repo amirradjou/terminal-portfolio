@@ -1,33 +1,24 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
+import { socials } from "../../data/profile";
+import { useOpenOnSubmit } from "../../hooks/useOpenOnSubmit";
 import { ProjectsIntro } from "../styles/Projects.styled";
 import { Cmd, CmdDesc, CmdList, HelpWrapper } from "../styles/Help.styled";
-import {
-  checkRedirect,
-  generateTabs,
-  getCurrentCmdArry,
-  isArgInvalid,
-} from "../../utils/funcs";
+import { generateTabs, isArgInvalid, redirectTarget } from "../../utils/funcs";
 import { termContext } from "../Terminal";
 import Usage from "../Usage";
 
+const socialIds = socials.map(({ id }) => id);
+const longestTitle = Math.max(...socials.map(({ title }) => title.length));
+
 const Socials: React.FC = () => {
-  const { arg, history, rerender } = useContext(termContext);
+  const { arg } = useContext(termContext);
 
-  /* ===== get current command ===== */
-  const currentCommand = getCurrentCmdArry(history);
-
-  /* ===== check current command makes redirect ===== */
-  useEffect(() => {
-    if (checkRedirect(rerender, currentCommand, "socials")) {
-      socials.forEach(({ id, url }) => {
-        id === parseInt(arg[1]) && window.open(url, "_blank");
-      });
-    }
-  }, [arg, rerender, currentCommand]);
+  /* ===== open the profile when `socials go <id>` is submitted ===== */
+  useOpenOnSubmit(redirectTarget(arg, socials));
 
   /* ===== check arg is valid ===== */
   const checkArg = () =>
-    isArgInvalid(arg, "go", ["1", "2", "3", "4"]) ? (
+    isArgInvalid(arg, "go", socialIds.map(String)) ? (
       <Usage cmd="socials" />
     ) : null;
 
@@ -36,10 +27,10 @@ const Socials: React.FC = () => {
   ) : (
     <HelpWrapper data-testid="socials">
       <ProjectsIntro>Here are my social links</ProjectsIntro>
-      {socials.map(({ id, title, url, tab }) => (
+      {socials.map(({ id, title, url }) => (
         <CmdList key={title}>
           <Cmd>{`${id}. ${title}`}</Cmd>
-          {generateTabs(tab)}
+          {generateTabs(longestTitle - title.length + 1)}
           <CmdDesc>- {url}</CmdDesc>
         </CmdList>
       ))}
@@ -47,32 +38,5 @@ const Socials: React.FC = () => {
     </HelpWrapper>
   );
 };
-
-const socials = [
-  {
-    id: 1,
-    title: "LinkedIn",
-    url: "https://www.linkedin.com/in/amirreza-radjou",
-    tab: 2,
-  },
-  {
-    id: 2,
-    title: "GitHub",
-    url: "https://github.com/amirradjou",
-    tab: 3,
-  },
-  {
-    id: 3,
-    title: "Twitter",
-    url: "https://twitter.com/mooolcool",
-    tab: 4,
-  },
-  {
-    id: 4,
-    title: "Terminal Portfolio",
-    url: "https://amirradjou.com",
-    tab: 5,
-  },
-];
 
 export default Socials;

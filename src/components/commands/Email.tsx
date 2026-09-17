@@ -1,21 +1,14 @@
-import { useContext } from "react";
-import _ from "lodash";
+import { profile } from "../../data/profile";
+import { useOpenOnSubmit } from "../../hooks/useOpenOnSubmit";
 import { Wrapper } from "../styles/Output.styled";
-import { termContext } from "../Terminal";
 
 const Email: React.FC = () => {
-  const { history, rerender } = useContext(termContext);
-
-  /* ===== get current command ===== */
-  const currentCommand = _.split(history[0], " ");
-
-  if (rerender && currentCommand[0] === "email" && currentCommand.length <= 1) {
-    window.open("mailto:" + "amirreza.radjou@gmail.com", "_self");
-  }
+  /* ===== open a mail draft when the command is submitted ===== */
+  useOpenOnSubmit(`mailto:${profile.email}`, "_self");
 
   return (
     <Wrapper>
-      <span>amirreza.radjou@gmail.com</span>
+      <span>{profile.email}</span>
     </Wrapper>
   );
 };
